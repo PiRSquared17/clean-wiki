@@ -27,11 +27,14 @@ There is a hard line between the wiki logic and the user interface. This makes s
 
 There are three page types: 
 
-  * Content Mode: a simple page display mode.
-  * Edit Mode: editable mode of a page.
+  * Page Mode: A specific page name is specified and loaded.
+    * View Mode: displays the content of the page.
+    * Edit Mode: editable mode of a page.
+    * History Mode: displays a list of all changes of a page.
+    * Diff View Mode: displays the difference between two versions.
+    * Version View Mode: displays a specific version of the page.
   * Info Mode: none editable pages that display the following:
     * Recent Changes: order from newest to oldest.
-    * Page History: displays a list of all changes of a page.
     * Search results: a list of found matches ordered by rank.
 
 Other pages that can be integrated within the main page are the login page and the create account page.
