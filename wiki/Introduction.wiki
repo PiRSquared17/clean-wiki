@@ -9,6 +9,7 @@ The purpose of Clean Wiki is to provide a small, simple, clean wiki yet maintain
   * Page comments.
   * Page permissions.
   * Rich Text (HTML) and not Wiki syntax.
+  * Advanced fast search.
 
 The goal is to keep it small. There are only a few files:
 
@@ -20,6 +21,17 @@ The goal is to keep it small. There are only a few files:
 
 Page are not store within a database but rather as basic HTML files within the wiki. The wiki page file structure is divided into two components: the header and the content separated by \r\n\r\n similar to the http protocol except that the header is entirely XML and the content is the wiki page html content.
 
-= Architectural Comments =
+= Architectural =
 
 There is a hard line between the wiki logic and the user interface. This makes skinning simple and keeps the code clean. The file _wiki.php_ contains the CleanWiki class which once loaded by _index.php_ will load the requested page content and provide all necessary information to help generate html within _index.php_. See Clean Wiki API for more details.
+
+There are three page types: 
+
+  * Content Mode: a simple page display mode.
+  * Edit Mode: editable mode of a page.
+  * Info Mode: none editable pages that display the following:
+    * Recent Changes: order from newest to oldest.
+    * Page History: displays a list of all changes of a page.
+    * Search results: a list of found matches ordered by rank.
+
+Other pages that can be integrated within the main page are the login page and the create account page.
