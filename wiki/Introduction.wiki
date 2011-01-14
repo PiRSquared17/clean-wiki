@@ -1,13 +1,19 @@
-#Provides an introduction to Clean Wiki
-
 = Introduction =
 
-Clean wiki is yet another wiki.
+The purpose of Clean Wiki is to determine who small can we write a wiki yet maintain a feature rich environment. Here are some of the key starting points of Clean Wiki.
 
+* Wirtten in PHP.
+* Does NOT require a database.
+* Easily sinkable.
+* Provides change history log.
+* Allows comments on pages.
+* Provides page permissions.
+* Uses Rich Text (HTML) and not Wiki syntax.
 
-= Details =
+The goal is to keep it small. There are only a few files:
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+* CleanWiki.php: contains the main wiki class and functionality.
+* index.php: the main wiki page that uses CleanWiki class to display the current page. Users can modify this html file to skin Clean Wiki.
+* script.js: client side javascript for rich text, drop down menu, etc.
+* styles.css: wiki skin styles.
+* security.xml: contains security group and user information.
