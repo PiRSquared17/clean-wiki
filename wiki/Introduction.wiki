@@ -12,8 +12,14 @@ The purpose of Clean Wiki is to provide a small, simple, clean wiki yet maintain
 
 The goal is to keep it small. There are only a few files:
 
-  * CleanWiki.php: contains the main wiki class and functionality.
+  * wiki.php: contains the main wiki class and functionality.
   * index.php: the main wiki page that uses CleanWiki class to display the current page. Users can modify this html file to skin Clean Wiki.
   * script.js: client side javascript for rich text, drop down menu, etc.
   * styles.css: wiki skin styles.
   * security.xml: contains security group and user information.
+
+Page are not store within a database but rather as basic HTML files within the wiki. The wiki page file structure is divided into two components: the header and the content separated by \r\n\r\n similar to the http protocol except that the header is entirely XML and the content is the wiki page html content.
+
+= Architectural Comments =
+
+There is a hard line between the wiki logic and the user interface. This makes skinning simple and keeps the code clean. The file _wiki.php_ contains the CleanWiki class which once loaded by _index.php_ will load the requested page content and provide all necessary information to help generate html within _index.php_. See Clean Wiki API for more details.
