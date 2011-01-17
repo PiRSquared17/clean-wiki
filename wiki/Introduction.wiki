@@ -27,14 +27,18 @@ There is a hard line between the wiki logic and the user interface. This makes s
 
 There are three page types: 
 
-  * Page Mode: A specific page name is specified and loaded.
+  * Page Mode: A page name is provided and loaded.
     * View Mode: displays the content of the page.
     * Edit Mode: editable mode of a page.
-    * History Mode: displays a list of all changes of a page.
+    * History Mode: displays a list of all changes made for the page.
     * Diff View Mode: displays the difference between two versions.
     * Version View Mode: displays a specific version of the page.
   * Info Mode: none editable pages that display the following:
     * Recent Changes: order from newest to oldest.
     * Search results: a list of found matches ordered by rank.
 
-Other pages that can be integrated within the main page are the login page and the create account page.
+Other pages that can be integrated within the main page are the login page and the create account page. 
+
+Security can be handled using client AJAX calls to the server to manage security groups and users. 
+
+The AJAX component of Clean Wiki uses XML to send and receive requests. Everything can be manipulated using http requests and sending XML to the clean wiki engine. This provides the ability to programmatically call any function over the HTTP prototypical to get or set any of the wiki information.
