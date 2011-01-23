@@ -21,3 +21,7 @@ Here is a complete list of V0.1 features:
   * Source view and edit.
 
 Full html is supported and is accessibly through source editing. Javascripits and Styles can also be added through source editing.
+
+Here is a screen shot of V0.1 (Still under development)
+
+http://clean-wiki.googlecode.com/svn/wiki/images/v0.1/rich_text.png
