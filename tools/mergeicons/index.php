@@ -85,7 +85,7 @@ class MergeIcons
 			$iY += $aImage['height'];
 		}
 	}
-	
+
 	/**
 	 * Generates a string of CSS classes for each image containing it's location.
 	 */
@@ -98,14 +98,14 @@ class MergeIcons
 		foreach ($this->aIcons as $aImage)
 		{
 			$sName = "{$sPrefix}_{$aImage['name']}";
-			$sStyle .= ".$sName{ background-position-y: -{$iY}px }";
+			$sStyle .= ".$sName{ background-position: 0px -{$iY}px }\n";
 			$sGlobal .= ",.$sName";
 			$iY += $aImage['height'];
 		}
 
 		return $sGlobal . "{background-image: url($sImageUrl); border: none}<br/>\n" . $sStyle;
 	}
-	
+
 	/**
 	 * Save the current merged image into the specified path.
 	 */
