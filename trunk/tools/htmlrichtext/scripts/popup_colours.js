@@ -1,7 +1,7 @@
 
-function RichTextDropdown_Color(oValues, fEventHandler)
+function RichTextPopup_Colours(oValues, fEventHandler)
 {
-	var self = new RichTextDropdown(oValues, fEventHandler);
+	var self = new RichTextPopup(null, null);
 
 	self.initColor = function()
 	{
@@ -18,15 +18,15 @@ function RichTextDropdown_Color(oValues, fEventHandler)
 			for (var x = 0; x < 8; x++)
 			{
 				var oCell = oRow.insertCell(-1);
-				oCell.rtEvent = {name: oValues.name, value: aValues[iIndex]};
+				oCell.rtObject = {name: oValues.name, value: aValues[iIndex]};
 				oCell.onclick = fEventHandler;
-                oCell.onmouseout = function() { this.className = "menu_item_color"; };
-                oCell.onmouseover = function() { this.className = "menu_item_color_over"; };
+				oCell.onmouseout = function() { this.className = "menu_item_color"; };
+				oCell.onmouseover = function() { this.className = "menu_item_color_over"; };
 				oCell.className = 'menu_item_color';
 				oCell.style.background = aValues[iIndex++];
 			}
 		}
-		
+
 		return self;
 	};
 	

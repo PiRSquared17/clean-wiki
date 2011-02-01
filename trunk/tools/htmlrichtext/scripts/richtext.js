@@ -15,20 +15,20 @@ function RichText(oContainer, fEventHandler)
 		self.updateToolbar();
 		self.rtTable = new RichTextTable(self.rtDocument);
 
-		self.table = oContainer.appendChild(new RichTextDropdown_Table(aRichTextTable, self.eventHandler));
-		self.fontSize = oContainer.appendChild(new RichTextDropdown(aRichTextFontSize, self.eventHandler));
-		self.fontStyle = oContainer.appendChild(new RichTextDropdown(aRichTextFontStyle, self.eventHandler));
-		self.fontFamily = oContainer.appendChild(new RichTextDropdown(aRichTextFontFamily, self.eventHandler));
-		self.fontColor = oContainer.appendChild(new RichTextDropdown_Color(aRichTextFontColor, self.eventHandler));
-		self.highlight = oContainer.appendChild(new RichTextDropdown_Color(aRichTextHighlight, self.eventHandler));
-		self.specialChars = oContainer.appendChild(new RichTextDropdown_Chars(aRichTextChars, self.eventHandler));
-		self.linkPopup = oContainer.appendChild(new RichTextDropdown_Link(new Array(), self.eventHandler));
-		self.imagePopup = oContainer.appendChild(new RichTextDropdown_Image(new Array(), self.eventHandler));
+		self.table = oContainer.appendChild(new RichTextPopup_Table(aRichTextTable, self.eventHandler));
+		self.fontSize = oContainer.appendChild(new RichTextPopup_Menu(aRichTextFontSize, self.eventHandler));
+		self.fontStyle = oContainer.appendChild(new RichTextPopup_Menu(aRichTextFontStyle, self.eventHandler));
+		self.fontFamily = oContainer.appendChild(new RichTextPopup_Menu(aRichTextFontFamily, self.eventHandler));
+		self.fontColor = oContainer.appendChild(new RichTextPopup_Colours(aRichTextFontColor, self.eventHandler));
+		self.highlight = oContainer.appendChild(new RichTextPopup_Colours(aRichTextHighlight, self.eventHandler));
+		self.specialChars = oContainer.appendChild(new RichTextPopup_Chars(aRichTextChars, self.eventHandler));
+		self.linkPopup = oContainer.appendChild(new RichTextPopup_Link(new Array(), self.eventHandler));
+		self.imagePopup = oContainer.appendChild(new RichTextPopup_Image(new Array(), self.eventHandler));
 
-		//Utility.addEventListener(document, "keydown", self.hideDropdowns);
-		//Utility.addEventListener(document, "mousedown", self.hideDropdowns);
-		//Utility.addEventListener(self.rtDocument, "keydown", self.hideDropdowns);
-		//Utility.addEventListener(self.rtDocument, "mousedown", self.hideDropdowns);
+		Utility.addEventListener(document, "keydown", self.hideDropdowns);
+		Utility.addEventListener(document, "mousedown", self.hideDropdowns);
+		Utility.addEventListener(self.rtDocument, "keydown", self.hideDropdowns);
+		Utility.addEventListener(self.rtDocument, "mousedown", self.hideDropdowns);
 
 		return self;
 	};
@@ -42,21 +42,21 @@ function RichText(oContainer, fEventHandler)
 	self.buildFrame = function()
 	{
 		self.rtContainer = self.rows[1].cells[0];
-        self.rtContainer.innerHTML = "<iframe class='richtext_frame' frameborder='0'></iframe>";
-        self.rtFrame = self.rtContainer.firstChild;
-        self.rtDocument = (self.rtFrame.contentWindow ? self.rtFrame.contentWindow.document : self.rtFrame.document);
-        self.rtDocument.designMode = "on";
-        self.rtDocument.write("<html><head><link rel='stylesheet' type='text/css' href='styles.css' /></head><body class='richtext_body'></body></html>");
+		self.rtContainer.innerHTML = "<iframe class='richtext_frame' frameborder='0'></iframe>";
+		self.rtFrame = self.rtContainer.firstChild;
+		self.rtDocument = (self.rtFrame.contentWindow ? self.rtFrame.contentWindow.document : self.rtFrame.document);
+		self.rtDocument.designMode = "on";
+		self.rtDocument.write("<html><head><link rel='stylesheet' type='text/css' href='styles.css' /></head><body class='richtext_body'></body></html>");
 
-        self.rtDocument.close();
-		//self.rtDocument.onclick = self.updateToolbar;
-		//self.rtDocument.onkeyup = self.updateToolbar;
+		self.rtDocument.close();
+		/*self.rtDocument.onclick = self.updateToolbar;*/
+		/*self.rtDocument.onkeyup = self.updateToolbar;*/
 
 		self.execCommand('enableObjectResizing', false, "true");
 		self.execCommand('enableInlineTableEditing', false, "true");
 	};
 	
-	self.hideDropdowns = function()
+	self.hidePopups = function()
 	{
 		self.table.hide();
 		self.fontSize.hide();
@@ -67,6 +67,12 @@ function RichText(oContainer, fEventHandler)
 		self.specialChars.hide();
 		self.linkPopup.hide();
 		self.imagePopup.hide();
+	};
+	
+	self.hideDropdowns = function(oEvent)
+	{
+		oEvent = (oEvent ? oEvent : event);
+		if (!Utility.inPopup(oEvent.target)) self.hidePopups();
 	};
 
 	self.updateToolbar = function()
@@ -110,7 +116,7 @@ function RichText(oContainer, fEventHandler)
 		else
 		{
 			if (oRange.select) oRange.select();
-			else               oRange.collapse(false);
+			else oRange.collapse(false);
 			self.execCommand(oEvent.name, false, oEvent.value);
 		}
 	};
@@ -121,7 +127,7 @@ function RichText(oContainer, fEventHandler)
 
 		if (fEventHandler && !fEventHandler(oEvent)) return;
 
-		self.hideDropdowns();
+		self.hidePopups();
 
 		if (oEvent.name == 'table_insert') self.rtTable.insertTable(self.getRange(), oEvent.value.y, oEvent.value.x);
 		else if (oEvent.name == 'table_left') self.rtTable.insertColumn(0);
@@ -132,16 +138,16 @@ function RichText(oContainer, fEventHandler)
 		else if (oEvent.name == 'row_delete') self.rtTable.deleteRow();
 		else if (oEvent.name == 'column_delete') self.rtTable.deleteColumn();
 
-		else if (oEvent.name == 'table') self.table.show(this, 0, 21, self.eventHandler);
-		else if (oEvent.name == 'fontSize') self.fontSize.show(this, 0, 21, self.eventHandler);
-		else if (oEvent.name == 'fontStyle') self.fontStyle.show(this, 0, 21, self.eventHandler);
-		else if (oEvent.name == 'fontFamily') self.fontFamily.show(this, 0, 21, self.eventHandler);
-		else if (oEvent.name == 'fontColor') self.fontColor.show(this, 0, 21, self.eventHandler);
-		else if (oEvent.name == 'highlight') self.highlight.show(this, 0, 21, self.eventHandler);
-		else if (oEvent.name == 'charInsert') self.specialChars.show(this, -250, 21, self.eventHandler);
+		else if (oEvent.name == 'table') self.table.show(this, 0, 21);
+		else if (oEvent.name == 'fontSize') self.fontSize.show(this, 0, 21);
+		else if (oEvent.name == 'fontStyle') self.fontStyle.show(this, 0, 21);
+		else if (oEvent.name == 'fontFamily') self.fontFamily.show(this, 0, 21);
+		else if (oEvent.name == 'fontColor') self.fontColor.show(this, 0, 21);
+		else if (oEvent.name == 'highlight') self.highlight.show(this, 0, 21);
+		else if (oEvent.name == 'charInsert') self.specialChars.show(this, -250, 21);
 		else if (oEvent.name == 'datetime') self.execEvent({name: 'inserthtml', value: new Date()});
-		else if (oEvent.name == 'link') self.linkPopup.show(this, -250, 21, self.eventHandler);
-		else if (oEvent.name == 'image') self.imagePopup.show(this, -250, 21, self.eventHandler);
+		else if (oEvent.name == 'link') self.linkPopup.show(this, -250, 21);
+		else if (oEvent.name == 'image') self.imagePopup.show(this, -250, 21);
 
 		else self.execEvent(oEvent);
 	};

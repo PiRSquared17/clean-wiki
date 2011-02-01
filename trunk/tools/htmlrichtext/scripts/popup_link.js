@@ -1,11 +1,11 @@
 
-function RichTextDropdown_Link(oValues, fEventHandler)
+function RichTextPopup_Link(oValues, fEventHandler)
 {
-	var self = new RichTextDropdown(oValues, fEventHandler);
+	var self = new RichTextPopup();
 
 	self.initLink = function()
 	{
-        self.innerHTML = 
+		self.innerHTML = 
 "<form name='RichTextInsertLink' onsubmit='return false;'>" + 
 	"<table class='menu_table rt_dropdown_link'>" + 
 		"<thead><tr><td align='center' colspan='2'>Insert Link</td></tr></thread>" + 
@@ -42,9 +42,9 @@ function RichTextDropdown_Link(oValues, fEventHandler)
 
 	self.supperShow = self.show;
 
-	self.show = function(oRelativeTo, iOffsetX, iOffsetY, fCallback)
+	self.show = function(oRelativeTo, iOffsetX, iOffsetY)
 	{
-		self.supperShow(oRelativeTo, iOffsetX, iOffsetY, fCallback); 
+		self.supperShow(oRelativeTo, iOffsetX, iOffsetY);
 		self.makeInternal(true);
 		self.form.link.focus();
 	};

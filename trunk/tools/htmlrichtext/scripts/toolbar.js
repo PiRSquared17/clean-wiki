@@ -38,7 +38,7 @@ function RichTextToolbar(aIcons, fEventHandler)
 		{
 			var oImage = oButton.appendChild(document.createElement("IMG"));
 			oImage.className = "icons_" + (oIcon.icon.length == 0 ? oIcon.name : oIcon.icon);
-			oImage.src = "empty.png";
+			oImage.src = "images/empty.png";
 		}
 
 		if (oIcon.text != null) oButton.appendChild(document.createTextNode(oIcon.text));

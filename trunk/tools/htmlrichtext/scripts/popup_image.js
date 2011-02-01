@@ -1,7 +1,7 @@
 
-function RichTextDropdown_Image(oValues, fEventHandler)
+function RichTextPopup_Image(oValues, fEventHandler)
 {
-	var self = new RichTextDropdown(oValues, fEventHandler);
+	var self = new RichTextPopup();
 
 	self.initLink = function()
 	{
@@ -30,10 +30,9 @@ function RichTextDropdown_Image(oValues, fEventHandler)
 
 	self.supperShow = self.show;
 
-	self.show = function(oRelativeTo, iOffsetX, iOffsetY, fCallback)
+	self.show = function(oRelativeTo, iOffsetX, iOffsetY)
 	{
-		self.supperShow(oRelativeTo, iOffsetX, iOffsetY, fCallback); 
-		self.makeInternal(true);
+		self.supperShow(oRelativeTo, iOffsetX, iOffsetY);
 		self.form.link.focus();
 	};
 

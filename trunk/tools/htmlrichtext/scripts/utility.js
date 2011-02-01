@@ -18,31 +18,52 @@ var Utility = {
 
 		return null;
 	},
+	
+	inPopup: function(oNode)
+	{
+		while (oNode != null)
+		{
+			if (oNode.isPopup) return true;
+			oNode = oNode.parentNode;
+		}
+		
+		return false;
+	},
 
-    clearXML: function(oElement)
-    {
-        while(oElement.firstChild != null) oElement.removeChild(oElement.lastChild);
-    },
+	isDefined: function(oObject)
+	{
+		return (typeof(oObject) != 'undefined');
+	},
 
-    position: function(oObject)
-    {
-        var oPosition = {x: 0, y: 0, width: oObject.offsetWidth, height: oObject.offsetHeight};
-        do
-        {
-            oPosition.y += oObject.offsetTop
-            oPosition.x += oObject.offsetLeft;
-            oObject = oObject.offsetParent;
-        }while(oObject != null);
+	defaultValue: function(oValue, oDefault)
+	{
+		return (Utility.isDefined(oValue) ? oValue : oDefault);
+	},
 
-        return oPosition;
-    },
+	clearXML: function(oElement)
+	{
+		while(oElement.firstChild != null) oElement.removeChild(oElement.lastChild);
+	},
 
-    cancelBubble: function(oEvent)
-    {
-        oEvent = (oEvent ? oEvent : event); 
-        oEvent.cancelBubble = true; 
-        return false;
-    },
+	position: function(oObject)
+	{
+		var oPosition = {x: 0, y: 0, width: oObject.offsetWidth, height: oObject.offsetHeight};
+		do
+		{
+			oPosition.y += oObject.offsetTop;
+			oPosition.x += oObject.offsetLeft;
+			oObject = oObject.offsetParent;
+		}while(oObject != null);
+
+		return oPosition;
+	},
+
+	cancelBubble: function(oEvent)
+	{
+		oEvent = (oEvent ? oEvent : event); 
+		oEvent.cancelBubble = true; 
+		return false;
+	},
 
 	isArray: function(oObject)
 	{
