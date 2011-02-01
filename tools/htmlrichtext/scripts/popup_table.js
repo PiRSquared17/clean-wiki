@@ -1,7 +1,7 @@
 
-function RichTextDropdown_Table(oValues, fEventHandler)
+function RichTextPopup_Table(oValues, fEventHandler)
 {
-	var self = new RichTextDropdown(oValues, fEventHandler);
+	var self = new RichTextPopup();
 
 	self.initTable = function()
 	{

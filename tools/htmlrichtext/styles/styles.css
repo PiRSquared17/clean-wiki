@@ -209,7 +209,7 @@
 /* Imported from MergeIcons Tool */
 
 .icons,.icons_align_center,.icons_align_left,.icons_align_right,.icons_bold,.icons_bullets,.icons_clearformat,.icons_close,.icons_column_delete,.icons_copy,.icons_cut,.icons_datetime,.icons_dropdown,.icons_empty,.icons_fontcolor,.icons_fontsizedown,.icons_fontsizeup,.icons_highlight,.icons_image,.icons_indent,.icons_italic,.icons_justify,.icons_line,.icons_link,.icons_link_remove,.icons_numbering,.icons_paste,.icons_redo,.icons_row_delete,.icons_ruler,.icons_save,.icons_saveclose,.icons_search,.icons_source,.icons_specialchars,.icons_strikethrough,.icons_subscript,.icons_supperscript,.icons_table,.icons_table_above,.icons_table_below,.icons_table_delete,.icons_table_left,.icons_table_right,.icons_undent,.icons_underline,.icons_undo,.icons_user
-{background-image: url(icons.png); border: none}
+{background-image: url(images/icons.png); border: none}
 .icons_align_center{ background-position: 0px -0px }
 .icons_align_left{ background-position: 0px -16px }
 .icons_align_right{ background-position: 0px -32px }

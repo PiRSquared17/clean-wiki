@@ -1,20 +1,49 @@
+<?
+class JSCleaner
+{
+	//parses, comments, words, string, numbers.
+
+	public function clean($sFilePath)
+	{
+	}
+}
+
+function jsClean($sFilePath, $bDebug = false)
+{
+	$sContent = file_get_contents($sFilePath);
+	$sContent = str_replace(array("\n","\r", "\t"), array("", "", ""), $sContent);
+
+	return $sContent;
+}
+
+function jsCleanAll($aFiles, $bDebug = false)
+{
+	$sContents = '';
+	foreach ($aFiles as $sFile) $sContents .= jsClean($sFile, $bDebug);
+
+	return $sContents;
+}
+
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
 		<style>
-			<?=include_once('styles.css'); ?>
+			<? include_once('styles/styles.css'); ?>
 		</style>
 		<script>
-			<?=include_once('dropdown.js'); ?>
-			<?=include_once('dropdown_chars.js'); ?>
-			<?=include_once('dropdown_color.js'); ?>
-			<?=include_once('dropdown_table.js'); ?>
-			<?=include_once('dropdown_link.js'); ?>
-			<?=include_once('dropdown_image.js'); ?>
-			<?=include_once('table.js'); ?>
-			<?=include_once('toolbar.js'); ?>
-			<?=include_once('utility.js'); ?>
-			<?=include_once('richtext.js'); ?>
+			<?=jsCleanAll(array('scripts/popup.js', 
+								'scripts/popup_link.js',
+								'scripts/popup_menu.js',
+								'scripts/popup_image.js',
+								'scripts/popup_table.js',
+								'scripts/popup_colours.js',
+								'scripts/popup_specialchars.js',
+								
+								'scripts/table.js',
+								'scripts/toolbar.js',
+								'scripts/utility.js',
+								'scripts/richtext.js')); ?>
 
 			var oRichText = null;
 
