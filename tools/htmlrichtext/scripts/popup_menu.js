@@ -19,7 +19,7 @@ function RichTextPopup_Menu(aValues, fEventHandler)
 		var oMenuItem = document.createElement('A');
 		oMenuItem.rtObject = oItem;
 		oMenuItem.onclick = fEventHandler;
-		oMenuItem.className = 'menu_item';
+		oMenuItem.className = 'richtext_menu_item';
 		oMenuItem.innerHTML = oItem.text;
 
 		return (oItem.node = oMenuItem);

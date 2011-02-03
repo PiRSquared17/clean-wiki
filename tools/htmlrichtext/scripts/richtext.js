@@ -2,7 +2,7 @@
 function RichText(oContainer, fEventHandler)
 {
 	oContainer.innerHTML =	"<table class='richtext' cellpadding='0' cellspacing='0'>" + 
-							"<thead><tr><td class='richtext_toolbar'></td><td class='richtext_discard'></td></tr></thead>" +
+							"<thead><tr><td class='richtext_bar'></td><td class='richtext_discard'></td></tr></thead>" +
 							"<tbody><tr><td colspan='2' height='100%'></td></tr></tbody></table>";
 
 	var self = oContainer.firstChild;
@@ -46,7 +46,7 @@ function RichText(oContainer, fEventHandler)
 		self.rtFrame = self.rtContainer.firstChild;
 		self.rtDocument = (self.rtFrame.contentWindow ? self.rtFrame.contentWindow.document : self.rtFrame.document);
 		self.rtDocument.designMode = "on";
-		self.rtDocument.write("<html><head><link rel='stylesheet' type='text/css' href='styles.css' /></head><body class='richtext_body'></body></html>");
+		self.rtDocument.write("<html><head><link rel='stylesheet' type='text/css' href='styles.css' /></head><body class='richtext_content'></body></html>");
 
 		self.rtDocument.close();
 		/*self.rtDocument.onclick = self.updateToolbar;*/

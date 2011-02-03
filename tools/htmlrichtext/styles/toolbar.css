@@ -1,0 +1,62 @@
+
+.richtext_toolbar
+{
+	padding: 0px;
+	font-size: 8pt;
+	font-family: arial;
+}
+
+.richtext_toolbar td
+{
+	padding: 2px 0px 0px 0px;
+	vertical-align: top;
+	border-left: 1px solid #CCC;
+}
+
+.richtext_toolbar img
+{
+	border: none;
+	vertical-align: middle;
+}
+
+.richtext_toolbar_button,
+.richtext_toolbar_button_selected,
+.richtext_toolbar_button_disabled
+{
+	color: #555;
+	margin: 1px;
+	padding: 3px;
+	cursor: pointer;
+	text-decoration: none;
+	line-height: 200%;
+	white-space: nowrap;
+	
+}
+
+.richtext_toolbar_button:hover
+{
+	padding: 2px;
+	text-decoration: none;
+	border: 1px solid #79b4dc;
+	background-color: #def0fa;
+}
+
+.richtext_toolbar_button_selected
+{
+	padding: 1px;
+	text-decoration: none;
+	border: 1px solid #79b4dc;
+	background-color: #def0fa;
+}
+
+.richtext_toolbar_button_disabled
+{
+	color: #888;
+	cursor: default;
+}
+
+.richtext_toolbar_button_disabled img
+{
+	opacity: 0.3;
+	filter: alpha(opacity=30);
+}
