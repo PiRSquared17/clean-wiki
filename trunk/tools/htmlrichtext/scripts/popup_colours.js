@@ -5,7 +5,7 @@ function RichTextPopup_Colours(oValues, fEventHandler)
 
 	self.initColor = function()
 	{
-		self.innerHTML = "<table class='menu_table' cellpadding='0px' cellspacing='2px'>" + 
+		self.innerHTML = "<table class='richtext_popup_table' cellpadding='0px' cellspacing='2px'>" + 
 						 "<thead><tr><td align='center'>Color Swatch</td></tr></thread>" + 
 						 "<tbody><tr><td><table style='border: 0px' cellpadding='0px' cellspacing='1px'></table></td></tr></tbody></table>";
 
@@ -20,9 +20,9 @@ function RichTextPopup_Colours(oValues, fEventHandler)
 				var oCell = oRow.insertCell(-1);
 				oCell.rtObject = {name: oValues.name, value: aValues[iIndex]};
 				oCell.onclick = fEventHandler;
-				oCell.onmouseout = function() { this.className = "menu_item_color"; };
-				oCell.onmouseover = function() { this.className = "menu_item_color_over"; };
-				oCell.className = 'menu_item_color';
+				oCell.onmouseout = function() { this.className = "richtext_colour_item"; };
+				oCell.onmouseover = function() { this.className = "richtext_colour_item_hover"; };
+				oCell.className = 'richtext_colour_item';
 				oCell.style.background = aValues[iIndex++];
 			}
 		}

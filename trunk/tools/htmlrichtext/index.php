@@ -1,12 +1,4 @@
 <?
-class JSCleaner
-{
-	//parses, comments, words, string, numbers.
-
-	public function clean($sFilePath)
-	{
-	}
-}
 
 function jsClean($sFilePath, $bDebug = false)
 {
@@ -29,7 +21,10 @@ function jsCleanAll($aFiles, $bDebug = false)
 <html>
 	<head>
 		<style>
-			<? include_once('styles/styles.css'); ?>
+			<?=jsCleanAll(array('styles/richtext.css',
+								'styles/toolbar.css',
+								'styles/popup.css',
+								'styles/icons.css')); ?>
 		</style>
 		<script>
 			<?=jsCleanAll(array('scripts/popup.js', 
@@ -74,6 +69,6 @@ function jsCleanAll($aFiles, $bDebug = false)
 		</script>
 	</head>
 	<body onload="load()">
-		<div id='contianer'></div>
+		<div id='contianer' style="width:100%; height:600px"></div>
 	</body>
 </html>

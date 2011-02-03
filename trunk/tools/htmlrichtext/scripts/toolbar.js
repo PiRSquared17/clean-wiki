@@ -5,7 +5,7 @@ function RichTextToolbar(aIcons, fEventHandler)
 
 	self.init = function()
 	{
-		self.className = 'toolbar';
+		self.className = 'richtext_toolbar';
 		self.build(aIcons);
 
 		return self;
@@ -32,12 +32,12 @@ function RichTextToolbar(aIcons, fEventHandler)
 		oButton.rtEvent = oIcon;
 		oButton.title = oIcon.tooltip;
 		oButton.onclick = fEventHandler;
-		oButton.className = 'toolbar_button';
+		oButton.className = 'richtext_toolbar_button';
 
 		if (oIcon.icon != null)
 		{
 			var oImage = oButton.appendChild(document.createElement("IMG"));
-			oImage.className = "icons_" + (oIcon.icon.length == 0 ? oIcon.name : oIcon.icon);
+			oImage.className = "rt_icons_" + (oIcon.icon.length == 0 ? oIcon.name : oIcon.icon);
 			oImage.src = "images/empty.png";
 		}
 
@@ -45,8 +45,8 @@ function RichTextToolbar(aIcons, fEventHandler)
 
 		oButton.isEnabled = true;
 		oButton.isSelected = false;
-		oButton.setEnabled = function(bEnabled){ oButton.isEnabled = bEnabled; oButton.className = (bEnabled ? 'toolbar_button' : 'toolbar_disabled'); };
-		oButton.setSelected = function(bSelected){ oButton.isSelected = bSelected; oButton.className = (bSelected ? 'toolbar_selected' : 'toolbar_button');  };		
+		oButton.setEnabled = function(bEnabled){ oButton.isEnabled = bEnabled; oButton.className = (bEnabled ? 'richtext_toolbar_button' : 'richtext_toolbar_button_disabled'); };
+		oButton.setSelected = function(bSelected){ oButton.isSelected = bSelected; oButton.className = (bSelected ? 'richtext_toolbar_button_selected' : 'richtext_toolbar_button');  };		
 
 		return (oIcon.node = oButton);
 	};

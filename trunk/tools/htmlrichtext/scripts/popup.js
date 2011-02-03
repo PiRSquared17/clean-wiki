@@ -7,7 +7,7 @@ function RichTextPopup()
 	{
 		self.isPopup = true;
 		self.isVisible = false;
-		self.className = "popup";
+		self.className = "richtext_popup";
 		return self;
 	};
 

@@ -119,7 +119,7 @@ class MergeIcons
 $oMergeIcons = new MergeIcons();
 $oMergeIcons->load('icons/');
 $oMergeIcons->merge();
-$oMergeIcons->save('icons.png');
-echo $oMergeIcons->generateCSS('icons', 'images/icons.png');
+$oMergeIcons->save('rt_icons.png');
+echo $oMergeIcons->generateCSS('rt_icons', 'images/rt_icons.png');
 
 ?>

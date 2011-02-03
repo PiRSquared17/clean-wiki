@@ -5,7 +5,7 @@ function RichTextPopup_Chars(oValues, fEventHandler)
 
 	self.initChars = function()
 	{
-		self.innerHTML = "<table class='menu_table' cellpadding='0px' cellspacing='2px'>" + 
+		self.innerHTML = "<table class='richtext_popup_table' cellpadding='0px' cellspacing='2px'>" + 
 						 "<thead><tr><td align='center'>Special Characters</td></tr></thread>" + 
 						 "<tbody><tr><td><table style='border: 0px' cellpadding='0px' cellspacing='1px'></table></td></tr></tbody></table>";
 
@@ -23,10 +23,10 @@ function RichTextPopup_Chars(oValues, fEventHandler)
 				var oCell = oRow.insertCell(-1);
 				oCell.rtObject = {name: 'inserthtml', value:  "&#" + iIndex + ";"};
 				oCell.innerHTML = "&#" + iIndex + ";";
-				oCell.className = "menu_item_chars";
+				oCell.className = "richtext_chars_item";
 				oCell.onclick = fEventHandler;
-				oCell.onmouseout = function() { this.className = "menu_item_chars"; };
-				oCell.onmouseover = function() { this.className = "menu_item_chars_over"; };
+				oCell.onmouseout = function() { this.className = "richtext_chars_item"; };
+				oCell.onmouseover = function() { this.className = "richtext_chars_item_hover"; };
 			}
 		}
 		

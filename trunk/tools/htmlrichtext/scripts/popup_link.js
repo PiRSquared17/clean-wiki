@@ -6,8 +6,8 @@ function RichTextPopup_Link(oValues, fEventHandler)
 	self.initLink = function()
 	{
 		self.innerHTML = 
-"<form name='RichTextInsertLink' onsubmit='return false;'>" + 
-	"<table class='menu_table rt_dropdown_link'>" + 
+"<form onsubmit='return false;'>" + 
+	"<table class='richtext_popup_table richtext_link'>" + 
 		"<thead><tr><td align='center' colspan='2'>Insert Link</td></tr></thread>" + 
 		"<tbody>" + 
 		"<tr><td></td><td>" + 

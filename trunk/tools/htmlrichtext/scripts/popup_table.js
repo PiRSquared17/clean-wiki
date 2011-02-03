@@ -5,7 +5,7 @@ function RichTextPopup_Table(oValues, fEventHandler)
 
 	self.initTable = function()
 	{
-		self.innerHTML = "<table class='menu_table' cellpadding='0px' cellspacing='2px'>" + 
+		self.innerHTML = "<table class='richtext_popup_table' cellpadding='0px' cellspacing='2px'>" + 
 						 "<thead><tr><td align='center'>(10x10)</td></tr></thread>" + 
 						 "<tbody><tr><td><table cellpadding='0px' cellspacing='0px'></table></td></tr></tbody></table>";
 
@@ -22,7 +22,7 @@ function RichTextPopup_Table(oValues, fEventHandler)
 				var oCell = oRow.insertCell(-1);
 				oCell.rtEvent = {name: oValues.name, value: {x: (x + 1), y: (y + 1)} };
 				oCell.onclick = fEventHandler;
-				oCell.className = 'menu_item_cell';
+				oCell.className = 'richtext_itable_cell';
 				oCell.onmouseout = Utility.cancelBubble;
 				oCell.onmouseover = self.selectCells;
 			}
@@ -42,7 +42,7 @@ function RichTextPopup_Table(oValues, fEventHandler)
 		{
 			var oRow = self.tableGrid.rows[y];
 			for (var x = 0; x < oRow.cells.length; x++)
-				oRow.cells[x].className = (x <= iColumns && y <= iRows ? 'menu_item_cell_over' : 'menu_item_cell');
+				oRow.cells[x].className = (x <= iColumns && y <= iRows ? 'richtext_itable_cell_hover' : 'richtext_itable_cell');
 		}
 	};
 
@@ -52,7 +52,7 @@ function RichTextPopup_Table(oValues, fEventHandler)
 		for (var y = 0; y < self.tableGrid.rows.length; y++)
 		{
 			var oRow = self.tableGrid.rows[y];
-			for (var x = 0; x < oRow.cells.length; x++) oRow.cells[x].className = 'menu_item_cell';
+			for (var x = 0; x < oRow.cells.length; x++) oRow.cells[x].className = 'richtext_itable_cell';
 		}
 	};
 
