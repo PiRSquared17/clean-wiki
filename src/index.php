@@ -13,7 +13,7 @@ $wiki = new Wiki();
 <html>
 	<head>
 		<style>
-			<?=Utility::getStyles('styles.css');?>
+			<?=Utility::getStyles('styles/styles.css');?>
 		</style>
 	</head>
 	<body>
@@ -40,7 +40,7 @@ $wiki = new Wiki();
 						<table class="search" cellpadding="0" cellspacing="0">
 							<tr>
 								<td><input type="text" name="search" value="<?=$wiki->searchString?>" tabindex="1"/></td>
-								<td><button type="submit" accesskey="q" alt="Search"><img src="images/icons/search.png" alt="Search"></button></td>
+								<td><button type="submit" accesskey="q" alt="Search"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAANCAAAAAC4QtCeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAJ0Uk5TAP9bkSK1AAAAaklEQVQI12P4///u3NrauXf/AwHD//05YLAfxLmbl7/n48c9+Xn3gZxJYDGg/BQgpyznC4jzJacMmVOMrgxowMFPnw5CDIAZnbMLxAFaWl09txrEY/gPAe87gTwY5//PmTmr4Jz/f699BgAmIHmp1XxJagAAAABJRU5ErkJggg==" alt="Search"></button></td>
 							</tr>
 						</table>
 					</form>
@@ -112,6 +112,18 @@ $wiki = new Wiki();
 				</div>
 
 				<?=$aVersion['content']?>
+
+			<? } else if ($wiki->action == 'login') { ?>
+
+				<form method="PUT" action="">
+					<table class="login" align="center">
+						<tr><td colspan="2"><h1>Log in</h1></td></tr>
+						<tr><td></td><td><h2>Invalid Username or Password</h2></td></tr>
+						<tr><td>Username:</td><td><input type="text" name="username"/></td></tr>
+						<tr><td>Password:</td><td><input type="password" name="password"/></td></tr>
+						<tr><td colspan="2" align="center"><input type="submit" name="login" value="Login"/></td></tr>
+					</table>
+				</form>
 
 			<? } else { ?>
 
