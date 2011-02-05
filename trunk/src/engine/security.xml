@@ -1,0 +1,16 @@
+<security>
+	<users allowAccoutCreation="false">
+		<user name="guest" displayName="Guest"/>
+		<user name="administrator" password="password" displayName="Administrator"/>
+		<user name="charbel.choueiri@live.ca" password="password" displayName="Charbel Choueiri" createdOn="2011/01/18 12:47:00" lastLoggedOn=""/>
+	</users>
+	<groups>
+		<group name="Guests">
+			<member name="guest"/>
+		</group>
+		<group name="Administrators">
+			<member name="Administrator" />
+			<member name="charbel.choueiri@live.ca" />
+		</group>
+	</groups>
+</security>

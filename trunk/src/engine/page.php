@@ -1,23 +1,39 @@
 <?
 define('PAGE_MODE_VIEW', 'VIEW');
 define('PAGE_MODE_EDIT', 'EDIT');
+define('PAGE_MODE_HIST', 'HIST');
+define('PAGE_MODE_VERS', 'VERS');
+define('PAGE_MODE_DIFF', 'DIFF');
+
+define('PERMISSION_COMMENT_ADD', 0);
+define('PERMISSION_COMMENT_MODIFY', 1);
+define('PERMISSION_COMMENT_DELETE', 1);
+
+define('PERMISSION_HISTORY_GET', 1);
+define('PERMISSION_VERSION_GET', 1);
+
+define('PERMISSION_PAGE_MODIFY', 1);
 
 class Page
 {
 	private $sPath;
 	private $sName;
+
 	private $sMode;
 	private $bExists = false;
+	private $bModified = false;
+	private $bIsEditable = true;
 
 	private $oHeader;
 	private $sHeader;
 	private $sContent;
 
-	private $aHistory = null;
-	private $aComments = null;
-	private $aPermissions = null;
-
 	private $oSearchTree;
+
+	public $user = null;
+	public $history;
+	public $comments;
+	public $permissions;
 
 	/**
 	 * Attempts to load the page with the specified name. If the page does not
@@ -27,9 +43,14 @@ class Page
 	 */
 	public function __construct($sName = 'Unnamed', $sMode = PAGE_MODE_VIEW)
 	{
+		$this->Load($sName, $sMode);
+	}
+	
+	private function load($sName, $sMode)
+	{
 		//If the name is empty or is null then throw exception.
 		if ($sName == null || strlen($sName) == 0) throw new Exception('Invalid page name.');
-	
+
 		//Store the page path to facilitate and simplify access so we don't have to 
 		//keep typing the full path every time. Also store the name in this class.
 		$this->sName = $sName;
@@ -42,9 +63,17 @@ class Page
 		//Create a new XML header Document while will later be populated by the page header data.
 		$this->oHeader = new DomDocument('1.0');
 		
+		//Create the helper classes.
+		$this->comments = new Comments($this);
+		$this->history = new History($this);
+		$this->permissions = new Permissions($this);
+		
 		//Check if the page exists. If so then get it's content.
 		if (file_exists($this->sPath))
 		{
+			//Set exists to true because we accturally found it.
+			$this->bExists = true;
+
 			//Get the text content of the page from the file using the page path.
 			$sContent = file_get_contents($this->sPath);
 			
@@ -59,9 +88,6 @@ class Page
 			//parse the XML header into the head document.
 			if ($iIndex && $iIndex > 0)
 			{
-				//Set exists to true because we accturally found it.
-				$this->bExists = true;
-
 				//Read the header from the file data.
 				$this->sHeader = substr($sContent, 0, $iIndex);
 
@@ -87,14 +113,24 @@ class Page
 		//If page does not exist then set the page in edit mode to allow the user to create it.
 		//Use the helper function to create a new empty page.
 		else $this->create($sName, '');
-		
-		$this->ensureIntegrity();
-		$this->ensureIntegrity();
-		
+
 		//Notice in the code above we handled the success code file and branched of to the error case
 		//later. This is generally the code style I'll use through all my code.
 	}
 	
+//Helper functions
+
+	public function write()
+	{
+		//If it has been modified then write page back to disk.
+		if ($this->bModified)
+		{
+			//Save the file back to disk
+			$sContent = $this->oHeader->saveXml($this->oHeader);
+			file_put_contents($this->sPath, trim($sContent) . "\r\n\r\n" . trim($this->sContent));
+		}
+	}
+
 	private function create($sName, $sContent)
 	{
 		//Set the page mode to edit.
@@ -162,92 +198,63 @@ class Page
 		}
 	}
 
-	//General
-	public function getName()
+	/**
+	 * Get the element or attribute VALUE for the specified xpath using this page's header.
+	 * This is an enternal helper function to assist in getting specific attributes or
+	 * elements from the header. This is designed to get the first node of the query only
+	 * which is mainly helpfull when getting root page elements and their attribute values or
+	 * using an xpath that returns only one node.
+	 *
+	 * The default value is returned when the xpath does not return any values. This is helpful 
+	 * mainly for getting attribute values when the attribute is not set the default value is 
+	 * returned.
+	 *
+	 * @param sXPath an xpath string
+	 * @param sDefault a default value if the specified xpath does not exist.
+	 * @return a DomElement or attribute string value that the xpath points to. 
+	 * or if xpath does not exist then returns the specified default value.
+	 */
+	public function get($sXPath, $sDefault = null)
 	{
-		return $this->sName;
-	}
-	
-	public function getPath()
-	{
-		return $this->sPath;
+		//Create the xpath object using the page header to execute the xpath query.
+		$oXPath = new DOMXpath($this->oHeader);
+
+		//Execute the xpath query.
+		$oNodeList = $oXPath->query($sXPath);
+
+		//If there are nodes returned then get the first node.
+		if ($oNodeList && $oNodeList->length > 0)
+		{
+			//Get the first node in the list. The reason is described in the comments above.
+			$oNode = $oNodeList->item(0);
+
+			//If node is attribute then return the value, otherwise return the node.
+			if ($oNode instanceof DomAttr) return $oNode->value;
+			else if ($oNode instanceOf DomElement) return $oNode;
+		}
+
+		//If no nodes found then return the default value.
+		return $sDefault;
 	}
 
-	public function getContent()
+	public function modified()
 	{
+		return ($this->bModified = true);
 	}
 	
+	//General
+	public function getName() { return $this->sName; }
+	public function getPath() { return $this->sPath; }
+	public function exists() { return $this->bExists; }
+	public function getMode() { return $this->sMode; }	
+	public function getContent() { return $this->sContent; }
+	public function isEditable() { return $this->bIsEditable; }
+
 	public function getUnformatedContent()
 	{
 	}
 
-	public function isPage()
-	{
-	}
-
-	public function isHistoryMode()
-	{
-	}
-
-	public function isVersionMode()
-	{
-	}
-
-	public function isDiffMode()
-	{
-	}
-
-	public function inEditMode()
-	{
-	}
-	
-	public function exists()
-	{
-	}
-
-	//History
-	public function hasHistory()
-	{
-	}
-	
-	public function getHistory()
-	{
-	}
-	
-	public function addChange($sUser, $sOldContent, $sNewContent)
-	{
-	}
-	
-	public function getChange($iIndex)
-	{
-	}
-	
-	public function getChangeDiff($iIndex)
-	{
-	}
-
-	//Comments
-	public function hasComment()
-	{
-	}
-
-	public function allowsComments()
-	{
-	}
-
-	public function getComments()
-	{
-	}
-
-	public function addComment($sUser, $sComment)
-	{
-	}
-
-	public function deleteComment($iIndex)
-	{
-	}
-
-	public function modifyComment($iIndex, $sUser, $sComment)
+	public function save($oUser, $sContent)
 	{
 	}
 
@@ -257,27 +264,6 @@ class Page
 	}
 
 	public function updateSearchTree($sContent)
-	{
-	}
-
-	//Permissions
-	public function allowComments($bAllow)
-	{
-	}
-
-	public function getPermissions()
-	{
-	}
-
-	public function clearPermissions()
-	{
-	}
-
-	public function addPermission($sGroup, $iPermission)
-	{
-	}
-
-	public function hasPermission($sUser, $iPermission)
 	{
 	}
 }
