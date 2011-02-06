@@ -15,5 +15,10 @@ If a search string is within quotes then the full search string is searched with
 ==Case Insensitive==
 All searches are case insensitive. This means the both the extracted content and the search tree are stored in lowercase and search strings are converted to lowercase before searching. I'm not sure if this is the best approach but this can be modified if required.
 
+==Search Tree==
+The are two main reasons for a search tree. First is for speed and second is for precision. The search tree has a similar structure to a spell-check tree. Travers the letters of a word until you find it if it exists. This also allows us to find partial words or miss-spelled words.
+These words are also returned but with a fractional rank.
 
+==Search Ranking==
+The search result for each page is based on a ranking system and is ordered from highest rank to lowest. The ranking system consists of 2 components: First the number of words found followed by the number of occurrence of these words. Partial words are also ranked with a fraction.
 
