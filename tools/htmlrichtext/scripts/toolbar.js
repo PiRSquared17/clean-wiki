@@ -38,7 +38,7 @@ function RichTextToolbar(aIcons, fEventHandler)
 		{
 			var oImage = oButton.appendChild(document.createElement("IMG"));
 			oImage.className = "rt_icons_" + (oIcon.icon.length == 0 ? oIcon.name : oIcon.icon);
-			oImage.src = "images/empty.png";
+			oImage.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAZiS0dEAAAAAAAA+UO7fwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sCBBYpODVgeswAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAADUlEQVQI12NgYGBgAAAABQABXvMqOgAAAABJRU5ErkJggg==";
 		}
 
 		if (oIcon.text != null) oButton.appendChild(document.createTextNode(oIcon.text));
