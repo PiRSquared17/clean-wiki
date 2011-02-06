@@ -1,46 +1,33 @@
-<?
-
-function jsClean($sFilePath, $bDebug = false)
-{
-	$sContent = file_get_contents($sFilePath);
-	$sContent = str_replace(array("\n","\r", "\t"), array("", "", ""), $sContent);
-
-	return $sContent;
-}
-
-function jsCleanAll($aFiles, $bDebug = false)
-{
-	$sContents = '';
-	foreach ($aFiles as $sFile) $sContents .= jsClean($sFile, $bDebug);
-
-	return $sContents;
-}
-
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<style>
-			<?=jsCleanAll(array('styles/richtext.css',
-								'styles/toolbar.css',
-								'styles/popup.css',
-								'styles/icons.css')); ?>
-		</style>
-		<script>
-			<?=jsCleanAll(array('scripts/popup.js', 
-								'scripts/popup_link.js',
-								'scripts/popup_menu.js',
-								'scripts/popup_image.js',
-								'scripts/popup_table.js',
-								'scripts/popup_colours.js',
-								'scripts/popup_specialchars.js',
-								
-								'scripts/table.js',
-								'scripts/toolbar.js',
-								'scripts/utility.js',
-								'scripts/richtext.js')); ?>
+		<? include('packager.php'); ?>
+		<?=Packager::package(array('scripts/popup.js', 
+							'scripts/popup_link.js',
+							'scripts/popup_menu.js',
+							'scripts/popup_image.js',
+							'scripts/popup_table.js',
+							'scripts/popup_colours.js',
+							'scripts/popup_specialchars.js',
+							
+							'scripts/table.js',
+							'scripts/toolbar.js',
+							'scripts/utility.js',
+							'scripts/richtext.js'),
+							
+							array('styles/richtext.css',
+							'styles/toolbar.css',
+							'styles/popup.css',
+							'styles/icons.css'), 
 
+							'richtext.php'); ?>
+		<script>
 			var oRichText = null;
+
+			function load()
+			{
+				oRichText = new RichText(document.getElementById('contianer'), handleEvents);
+			}
 
 			function handleEvents(oEvent)
 			{
@@ -59,11 +46,6 @@ function jsCleanAll($aFiles, $bDebug = false)
 
 			function save(fClose)
 			{
-			}
-
-			function load()
-			{
-				oRichText = new RichText(document.getElementById('contianer'), handleEvents);
 			}
 
 		</script>
