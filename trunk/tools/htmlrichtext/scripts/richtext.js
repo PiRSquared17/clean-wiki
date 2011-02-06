@@ -46,7 +46,7 @@ function RichText(oContainer, fEventHandler)
 		self.rtFrame = self.rtContainer.firstChild;
 		self.rtDocument = (self.rtFrame.contentWindow ? self.rtFrame.contentWindow.document : self.rtFrame.document);
 		self.rtDocument.designMode = "on";
-		self.rtDocument.write("<html><head><link rel='stylesheet' type='text/css' href='styles.css' /></head><body class='richtext_content'></body></html>");
+		self.rtDocument.write("<html><head><style><?=Packager::get('styles/content.css', false);?></style></head><body class='richtext_content'></body></html>");
 
 		self.rtDocument.close();
 		/*self.rtDocument.onclick = self.updateToolbar;*/
@@ -55,7 +55,7 @@ function RichText(oContainer, fEventHandler)
 		self.execCommand('enableObjectResizing', false, "true");
 		self.execCommand('enableInlineTableEditing', false, "true");
 	};
-	
+
 	self.hidePopups = function()
 	{
 		self.table.hide();
