@@ -1,4 +1,4 @@
 #labels Featured,Phase-Design
-#Specifications & Features
+=Specifications & Features=
 
-||*Status*||*Priority*||*Discription*||
+||*Status*||*Type*||*Component*||*Priority*||*Discription*||
