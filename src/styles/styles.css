@@ -160,7 +160,7 @@ body
 .comments div
 {
 	padding-left: 50px;
-	padding-bottom: 20px;
+	padding-bottom: 5px;
 }
 
 .comment input[type=text]

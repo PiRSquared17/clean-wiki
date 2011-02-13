@@ -2,7 +2,7 @@
 	<users allowAccoutCreation="false">
 		<user name="guest" displayName="Guest"/>
 		<user name="administrator" password="password" displayName="Administrator"/>
-		<user name="charbel.choueiri@live.ca" password="password" displayName="Charbel Choueiri" createdOn="2011/01/18 12:47:00" lastLoggedOn=""/>
+		<user name="charbel.choueiri@live.ca" password="d524bd9475dc4312ecfe4041794e4820" displayName="Charbel Choueiri" createdOn="2011/01/18 12:47:00" lastLoggedOn=""/>
 	</users>
 	<groups>
 		<group name="Guests">

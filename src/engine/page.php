@@ -264,7 +264,7 @@ class Page
 		if ($sContent != $this->sContent)
 		{
 			//TODO: Check user permissions first.
-			
+
 			//If the page was saved within the last 5 minutes by the same user then merge the saves into one.
 
 			//Add a new history and add the old content to it.

@@ -30,7 +30,7 @@ class Wiki
 	public $editUrl = '';
 	public $historyUrl = '';
 
-	public $loginUrl = '?action=login';
+	public $loginUrl = '?action=loginPage';
 	public $logoutUrl = '?action=logout';
 	public $securityUrl = '?aciton=security';
 	public $createAccountUrl = '?action=createaccount';
@@ -89,6 +89,12 @@ class Wiki
 	protected $commentCount = 0;
 	protected $commentIndex = 0;
 
+	//Admin Permissions
+	public $canEditComment = false;
+	public $canDeleteComment = false;
+	public $canUndeleteComment = false;
+	public $showDeletedComments = false;
+
 //History
 
 	//If is wiki page and page has history.
@@ -118,6 +124,9 @@ class Wiki
 
 	//True if the user is logged on.
 	public $isLoggedIn = false;
+	
+	//Indicates that the logged on user is an administrator.
+	public $isAdmin = false;
 
 	//True if this wiki allows users to create accounts and user is not logged on.
 	public $canCreateAccount = false;
@@ -152,12 +161,17 @@ class Wiki
 	protected $searchCount = 0;
 	protected $searchIndex = 0;
 	
+//Security & Logins.
+
+	public $isValidAuthentication = true;
+	
 //Constructor
 
 	public function __construct()
 	{
-//TODO: Load from session.
-		$this->user = new User('Guest', 'Guest', array());
+		session_start();
+
+		$this->loadUser();
 
 		$this->index = Utility::getRequest('index', 0);
 		$this->action = Utility::getRequest('action', 'view');
@@ -168,11 +182,45 @@ class Wiki
 		{
 			$this->loadSearchResults();
 		}
+		else if ($this->action == 'loginPage')
+		{
+
+		}
 		else if ($this->action == 'login')
 		{
+			//Get the username and password from the session
+			$sUsername = Utility::getRequest('username', '');
+			$sPassword = Utility::getRequest('password', '');
+			
+			$oSecurity = new Security();
+
+			//Try to log in using specified username and password.
+			if ($oUser = $oSecurity->login($sUsername, $sPassword))
+			{
+				//If valid then store user in session and route to last page,
+				$_SESSION['user'] = $oUser;
+				
+				//TODO: make into a function. getLastPage()
+				$sPageName = (isset($_SESSION['page']) ? $_SESSION['page'] : 'Home');
+
+				header("Location: ?page={$sPageName}"); //TODO: continue loading last valid page without reloading.
+			}
+			//If invalid user name or password
+			else
+			{
+				$this->action = 'loginPage';
+				$this->isValidAuthentication = false;
+			}
 		}
 		else if ($this->action == 'logout')
 		{
+			unset($_SESSION['user']);
+			
+			//Load last read page.
+			$sPageName = (isset($_SESSION['page']) ? $_SESSION['page'] : 'Home');
+
+			//TODO: it is better to continue loading page without reloading.
+			header("Location: ?page=$sPageName"); 
 		}
 		else if ($this->action == 'createaccount')
 		{
@@ -217,6 +265,14 @@ class Wiki
 
 			if ($oPage->exists()) $oPage->write();
 		}
+	}
+	
+	public function loadUser()
+	{
+		$this->user = (isset($_SESSION['user']) ? $_SESSION['user'] : new User('Guest', 'Guest', array()));
+
+		$this->isLoggedIn = $this->user->bIsLoggedIn;
+		$this->userDisplayName = $this->user->sDisplayName;
 	}
 
 	public function loadPage($oPage)
@@ -265,6 +321,9 @@ class Wiki
 			$this->hasComments = !$this->page->comments->isEmpty();
 			$this->commentCount = count($this->comments);
 			$this->allowsComments = $this->page->comments->isAllowed();
+			
+			//Store this page in session
+			$_SESSION['page'] = $this->pageName;
 		}
 		else
 		{

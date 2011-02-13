@@ -44,7 +44,7 @@ $wiki = new Wiki();
 					<div class="menu">
 						<? if ($wiki->hasSecurityPermissions){?> <a href="<?=$wiki->securityUrl?>">Security</a> <?}?>
 						<? if ($wiki->canCreateAccount){?> <a href="<?=$wiki->createAccountUrl?>">Creat Account</a> <?}?>
-						<? if ($wiki->isLoggedIn){?> <a href="<?=$wiki->logoutUrl?>">Log out</a> <?}?>
+						<? if ($wiki->isLoggedIn){?> <i>Welcome, <?=$wiki->userDisplayName?></i> <a href="<?=$wiki->logoutUrl?>">Log out</a> <?}?>
 						<? if (!$wiki->isLoggedIn){?> <a href="<?=$wiki->loginUrl?>">Log in</a> <?}?>
 					</div>
 				</td>
@@ -99,7 +99,7 @@ $wiki = new Wiki();
 
 					<? include_once('version.php'); ?>
 
-				<? } else if ($wiki->action == 'login') { ?>
+				<? } else if ($wiki->action == 'loginPage') { ?>
 
 					<? include_once('login.php'); ?>
 
