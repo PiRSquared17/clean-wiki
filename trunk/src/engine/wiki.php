@@ -1,16 +1,5 @@
 <?
-define('PAGES_DIR', getcwd() . '/pages/');
-define('START_PAGE', 'Home');
-define('WIKI_VERSION', '2.1');
-
-include_once('page.php');
-include_once('user.php');
-include_once('search.php');
-include_once('utility.php');
-include_once('history.php');
-include_once('comments.php');
-include_once('security.php');
-include_once('permissions.php');
+define('WIKI_VERSION', '0.1');
 
 class Wiki
 {
@@ -30,6 +19,9 @@ class Wiki
 
 	//Points the home page.
 	public $homeUrl = '?page=Home';
+	
+	//Url to create a new page.
+	public $newUrl = '?action=new';
 
 	//Points the Recent Changes Page.
 	public $recentChangesUrl = '?action=recentchanges';
@@ -56,9 +48,18 @@ class Wiki
 
 	//Holds the current page's URL
 	public $pageUrl = '';
-	
+
 	//Indicates that it is displaying a page.
 	public $isPage = false;
+
+	//Indicates if the current does not exist and is a new page to be created.
+	public $newPage = false;
+	
+	//Indicates whether the page is in edit mode.
+	public $editPage = false;
+	
+	//Indicates whether the title is in edit mode. This is also dependent on editPage.
+	public $editTitle = false;
 
 	//Holds the current page name, which could also be a fixed page such as Recent Changes.
 	public $pageName = '';
@@ -156,7 +157,7 @@ class Wiki
 	public function __construct()
 	{
 //TODO: Load from session.
-		$this->user = new User('Guest', 'Guest');
+		$this->user = new User('Guest', 'Guest', array());
 
 		$this->index = Utility::getRequest('index', 0);
 		$this->action = Utility::getRequest('action', 'view');
@@ -185,13 +186,20 @@ class Wiki
 		}
 		else
 		{
-			$oPage = new Page($this->pageName);
+			if ($this->action == 'new') $this->pageName = Utility::getRequest('page', '');
+			
+			$oPage = new Page($this->user, $this->pageName);
 
 			if ($this->action == 'comment')
 			{
 				//TODO: check the conditions to which this can occure.
 				$oPage->comments->add($this->user, Utility::getRequest('comment', ''));
-				$oPage->write();
+				$this->action = '';
+			}
+			else if ($this->action == 'edit')
+			{
+				$this->editPage = true;
+				$this->editTitle = ($this->pageName != 'Home');
 			}
 			else if ($this->action == 'comment_modify')
 			{
@@ -199,59 +207,71 @@ class Wiki
 			else if ($this->action == 'comment_delete')
 			{
 			}
-			else if ($this->action == 'save')
+			else if ($this->action == 'save' || $this->action == 'save&close')
 			{
-				//Comments Allow, Permissions, Content.
+				$oPage->save($this->user, Utility::getRequest('content', ''));
+				$this->action = ($this->action == 'save' ? 'edit' : '');
 			}
 
 			$this->loadPage($oPage);
+
+			if ($oPage->exists()) $oPage->write();
 		}
 	}
 
 	public function loadPage($oPage)
 	{
 		$this->page = $oPage;
-
-		//Page
-		$this->isPage = true;
-		$this->pageUrl = "?page={$this->page->getName()}";
-		$this->pageName = $this->page->getName();
-		$this->editUrl = "?page={$this->pageName}&action=edit";
-		$this->isEditable = $this->page->isEditable();
-		$this->pageContent = $this->page->getContent();
-
-		//Permissions
-		$this->hasEditPermissions = $this->page->permissions->has($this->user, PERMISSION_HISTORY_GET);
-		$this->hasHistoryPermissions = $this->page->permissions->has($this->user, PERMISSION_HISTORY_GET);
-		$this->hasCommentPermissions = $this->page->permissions->has($this->user, PERMISSION_COMMENT_ADD);
-
-		//History
-		$this->history = $this->page->history->getAll();
-		$this->historyUrl = "?page={$this->pageName}&action=history";
-		$this->historyCount = count($this->history);
-
-		//History extras
-		if ($this->historyCount > 0)
+		
+		if ($this->page->exists())
 		{
-			$this->hasHistory = true;
-			$this->hasCreator = true;
-			$this->createdBy = $this->history[0]['user'];
-			$this->createdOn = $this->history[0]['datetime'];
+			//Page
+			$this->isPage = true;
+			$this->pageUrl = "?page={$this->page->getName()}";
+			$this->pageName = $this->page->getName();
+			$this->editUrl = "?page={$this->pageName}&action=edit";
+			$this->isEditable = $this->page->isEditable();
+			$this->pageContent = $this->page->getContent();
 
-			if ($this->historyCount > 1)
+			//Permissions
+			$this->hasEditPermissions = $this->page->permissions->has($this->user, PERMISSION_HISTORY_GET);
+			$this->hasHistoryPermissions = $this->page->permissions->has($this->user, PERMISSION_HISTORY_GET);
+			$this->hasCommentPermissions = $this->page->permissions->has($this->user, PERMISSION_COMMENT_ADD);
+
+			//History
+			$this->history = $this->page->history->getAll();
+			$this->historyUrl = "?page={$this->pageName}&action=history";
+			$this->historyCount = count($this->history);
+
+			//History extras
+			if ($this->historyCount > 0)
 			{
-				$this->isModified = true;
-				$this->lastModifiedBy = $this->history[$this->historyCount-1]['user'];
-				$this->lastModifiedOn = $this->history[$this->historyCount-1]['datetime'];
-			}
-		}
+				$this->hasHistory = true;
+				$this->hasCreator = true;
+				$this->createdBy = $this->history[0]['user'];
+				$this->createdOn = $this->history[0]['datetime'];
 
-		//Comments
-		$this->showComments = ($this->action == 'view');
-		$this->comments = $this->page->comments->get();
-		$this->hasComments = !$this->page->comments->isEmpty();
-		$this->commentCount = count($this->comments);
-		$this->allowsComments = $this->page->comments->isAllowed();
+				if ($this->historyCount > 1)
+				{
+					$this->isModified = true;
+					$this->lastModifiedBy = $this->history[$this->historyCount-1]['user'];
+					$this->lastModifiedOn = $this->history[$this->historyCount-1]['datetime'];
+				}
+			}
+
+			//Comments
+			$this->showComments = ($this->action == 'view');
+			$this->comments = $this->page->comments->get();
+			$this->hasComments = !$this->page->comments->isEmpty();
+			$this->commentCount = count($this->comments);
+			$this->allowsComments = $this->page->comments->isAllowed();
+		}
+		else
+		{
+			$this->newPage = true;
+			$this->editPage = true;
+			$this->editTitle = ($this->pageName != 'Home');
+		}
 	}
 
 //Load search result
@@ -374,7 +394,7 @@ class Wiki
 			{
 				$sName = substr($sFile, 0, $iIndex);
 				$sExtension = substr($sFile, $iIndex + 1);
-				if ($sExtension == 'html') $aPages[] = new Page($sName);
+				if ($sExtension == 'html') $aPages[] = new Page($this->user, $sName);
 			}
 		}
 		

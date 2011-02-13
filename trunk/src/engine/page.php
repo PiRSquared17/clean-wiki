@@ -19,7 +19,6 @@ class Page
 	private $sPath;
 	private $sName;
 
-	private $sMode;
 	private $bExists = false;
 	private $bModified = false;
 	private $bIsEditable = true;
@@ -41,15 +40,16 @@ class Page
 	 *
 	 * @param sName string name of the page to load. If does not exists loads in edit mode.
 	 */
-	public function __construct($sName = 'Unnamed', $sMode = PAGE_MODE_VIEW)
+	public function __construct($oUser, $sName = 'Unnamed')
 	{
-		$this->Load($sName, $sMode);
+		$this->user = $oUser;
+		$this->Load($sName, PAGE_MODE_VIEW);
 	}
 	
 	private function load($sName, $sMode)
 	{
 		//If the name is empty or is null then throw exception.
-		if ($sName == null || strlen($sName) == 0) throw new Exception('Invalid page name.');
+		//if ($sName == null || strlen($sName) == 0) throw new Exception('Invalid page name.');
 
 		//Store the page path to facilitate and simplify access so we don't have to 
 		//keep typing the full path every time. Also store the name in this class.
@@ -67,9 +67,9 @@ class Page
 		$this->comments = new Comments($this);
 		$this->history = new History($this);
 		$this->permissions = new Permissions($this);
-		
+
 		//Check if the page exists. If so then get it's content.
-		if (file_exists($this->sPath))
+		if (!($sName == null || strlen($sName) == 0) && file_exists($this->sPath))
 		{
 			//Set exists to true because we accturally found it.
 			$this->bExists = true;
@@ -135,7 +135,7 @@ class Page
 	{
 		//Set the page mode to edit.
 		$this->sMode = PAGE_MODE_EDIT;
-
+		
 		//Set the standard XML header content for a new page. This will include the permissions, 
 		//history, search (tree, and text content), and finally comments. Notic that only guest permissions
 		//is required because adminitrators will always have access to the file whether it is given
@@ -246,7 +246,6 @@ class Page
 	public function getName() { return $this->sName; }
 	public function getPath() { return $this->sPath; }
 	public function exists() { return $this->bExists; }
-	public function getMode() { return $this->sMode; }	
 	public function getContent() { return $this->sContent; }
 	public function isEditable() { return $this->bIsEditable; }
 
@@ -254,8 +253,32 @@ class Page
 	{
 	}
 
+	/**
+	 * 
+	 */
 	public function save($oUser, $sContent)
 	{
+		$sContent = trim($sContent);
+
+		//if the page content has changed then save it.
+		if ($sContent != $this->sContent)
+		{
+			//TODO: Check user permissions first.
+			
+			//If the page was saved within the last 5 minutes by the same user then merge the saves into one.
+
+			//Add a new history and add the old content to it.
+			$this->history->add($this->sContent, $sContent);
+
+			//Update the search content information.
+			$this->updateSearchTree($sContent);
+
+			//Set the new content of this file.
+			$this->sContent = $sContent;
+
+			//Indicate that the file has changed.
+			$this->modified();
+		}
 	}
 
 	//Search
@@ -265,6 +288,18 @@ class Page
 
 	public function updateSearchTree($sContent)
 	{
+	/*
+		$oSearch = new SearchTree();
+		$oSearch->build($sContent);
+
+		$oSearchTree = $this->get('//page/search/tree');
+		$oSearchTree->setAttribute('format', 'base64/gz');
+		$oSearchTree->nodeValue =  base64_encode(gzcompress($oSearch->save()));
+
+		$oSearchContent = $this->get('//page/search/content');
+		$oSearchContent->setAttribute('format', 'base64/gz');
+		$oSearchContent->nodeValue =  base64_encode(gzcompress($oSearch->textContent));
+	*/
 	}
 }
 

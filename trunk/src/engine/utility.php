@@ -118,6 +118,44 @@ class Utility
 		return $sDate;
 	}
 	
+	public static function getPath($oParent, $sXPath, $sDefault = null)
+	{
+		//Create the xpath object using the page header to execute the xpath query.
+		$oXPath = new DOMXpath($oParent);
+
+		//Execute the xpath query.
+		$oNodeList = $oXPath->query($sXPath);
+
+		//If there are nodes returned then get the first node.
+		if ($oNodeList && $oNodeList->length > 0)
+		{
+			//Get the first node in the list. The reason is described in the comments above.
+			$oNode = $oNodeList->item(0);
+
+			//If node is attribute then return the value, otherwise return the node.
+			if ($oNode instanceof DomAttr) return $oNode->value;
+			else if ($oNode instanceOf DomElement) return $oNode;
+		}
+
+		//If no nodes found then return the default value.
+		return $sDefault;
+	}
+	
+	public static function getPaths($oParent, $sXPath, $sDefault = null)
+	{
+		//Create the xpath object using the page header to execute the xpath query.
+		$oXPath = new DOMXpath($oParent);
+
+		//Execute the xpath query.
+		$oNodeList = $oXPath->query($sXPath);
+
+		//If there are nodes returned then get the first node.
+		if ($oNodeList && $oNodeList->length > 0) return $oNodeList;
+
+		//If no nodes found then return the default value.
+		return $sDefault;
+	}
+	
 }
 
 

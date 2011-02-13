@@ -43,10 +43,12 @@ class History
 		else return false;
 	}
 
-	private function add($sUser, $sOldContent, $sNewContent)
+	public function add($sOldContent, $sNewContent)
 	{
+		$oUser = $this->oPage->user;
+	
 		//Ensure the user has permissions to modify the page.
-		if ($this->oPage->hasPermissoin($oUser, PERMISSION_PAGE_MODIFY))
+		if ($this->oPage->permissions->has($oUser, PERMISSION_PAGE_MODIFY))
 		{
 			//Get the version element to add the new version to.
 			$oHistory = $this->oPage->get('//page/history');
