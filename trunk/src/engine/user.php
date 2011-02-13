@@ -6,11 +6,14 @@ class User
 	public $sDisplayName;
 	public $aMemberOf;
 	
-	public function __construct($sEmail, $sDisplayName, $aMemberOf)
+	public $bIsLoggedIn = false;
+	
+	public function __construct($sEmail, $sDisplayName, $aMemberOf, $bIsLoggedIn = false)
 	{
 		$this->sEmail = $sEmail;
 		$this->aMemberOf = $aMemberOf;
 		$this->sDisplayName = $sDisplayName;
+		$this->bIsLoggedIn = $bIsLoggedIn;
 	}
 
 	public function getId()

@@ -12,24 +12,39 @@
  */
 class Security
 {	
+	private $oDocument = null;
+
+	public function __construct($sSecuirtyXmlPath = 'engine/security.xml')
+	{
+		$this->oDocument = new DomDocument('1.0');
+		$this->oDocument->load($sSecuirtyXmlPath);
+	}
+
 	//Login
 	public function login($sUser, $sPassword)
 	{
 		$oUser = false;
 		$sUser = strtolower($sUser);
-		$oUserElement = Utility::getPath($this->oDocument, "security/users/user[@name='$sUser']");
 
-		if ($oUserElement != null && $oUserElement->getAttributE('password') == md5($sPassword))
+		//Find the user element within the security users.
+		$oUserElement = Utility::getPath($this->oDocument, "//security/users/user[@name='$sUser']");
+
+		//If the user exists then check the password.
+		if ($oUserElement != null && $oUserElement->getAttribute('password') == md5($sPassword))
 		{
+			//Load the user display name.
 			$sDisplayName = $oUserElement->getAttribute('displayName');
 
+			//Get all the groups that this user belongs to and add them to the members list.
 			$aMemberOf = array();
-			$aMembers = Utility::getPaths($oGroups, "//member[@name='$sUser']");
+			$aMembers = Utility::getPaths($this->oDocument, "//security/groups/*member[@name='$sUser']");
 			foreach ($aMembers as $oMember) $aMemberOf[] = $oMember->parentNode->getAttribute('name');
 
-			$oUser = new User($sUser, $sDisplayName, $aMemberOf);
+			//Create the user with the name and display name and member groups.
+			$oUser = new User($sUser, $sDisplayName, $aMemberOf, true);
 		}
 
+		//Return the user object which could be false if the user did not exist.
 		return $oUser;
 	}
 

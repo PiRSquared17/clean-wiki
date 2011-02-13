@@ -1,5 +1,13 @@
 
+<!-- Add the following buttons: Allow Comments. 
+	Permissions: 
+		Groups with read permissions
+		Groups with edit permissions
+		Groups with comment permissions
+-->
+
 <div id="pagecontent" style="height:700px"><?=$wiki->pageContent?></div>
+
 <form name="editForm" method="post" action=".">
 	<input type="hidden" name="page" value="<?=$wiki->pageName?>"/>
 	<input type="hidden" name="action" value=""/>
