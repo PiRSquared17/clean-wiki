@@ -79,4 +79,48 @@ class Security
 	}
 }
 
+/*
+function requestLogger($oRequest)
+{
+	$sFile = 'logs/requests/'.date('Y-m-d').'.xml';
+
+	$sUser = (isset($_SESSION['id']) ? $_SESSION['id'] : 'UNKNOWN');
+	$sDate = date('Y-m-d H:i:s');
+
+	$oCopy = $oRequest->cloneNode(false);
+	$oCopy->setAttribute('__User', $sUser);
+	$oCopy->setAttribute('__Datetime', $sDate);
+	
+	if ($oCopy->hasAttribute('Password')) $oCopy->setAttribute('Password', '********');
+	if ($oCopy->hasAttribute('OldPassword')) $oCopy->setAttribute('OldPassword', '********');
+	if ($oCopy->hasAttribute('NewPassword')) $oCopy->setAttribute('NewPassword', '********');
+
+
+	$iTries = 0;
+	$iMaxTries = 100;
+	$oFile = fopen($sFile, 'a');
+
+	if (!$oFile) return false;
+
+	do
+	{ 
+		if ($iTries > 0) usleep(rand(1, 10000)); 
+		$iTries++;
+
+	} while (!flock($oFile, LOCK_EX) && $iTries <= $iMaxTries);
+
+	if ($iTries == $iMaxTries)
+	{
+		fclose($oFile);
+		return false;
+	}
+
+	fwrite($oFile, XML::save($oCopy)."\n");
+	flock($oFile, LOCK_UN); 
+	fclose($oFile);
+	
+	return true;
+}
+*/
+
 ?>

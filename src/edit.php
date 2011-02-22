@@ -1,6 +1,7 @@
 
-<!-- Add the following buttons: Allow Comments. 
+<!--
 	Permissions: 
+		Allow Comments
 		Groups with read permissions
 		Groups with edit permissions
 		Groups with comment permissions
