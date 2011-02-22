@@ -460,7 +460,7 @@ class Wiki
 		return $aPages;
 	}
 
-	
+//Property for each feature & Menu
 	
 }
 

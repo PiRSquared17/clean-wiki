@@ -2,6 +2,30 @@
 
 class Utility
 {
+	public static function ensureKeys(&$aArray, $aKeys)
+	{
+		foreach ($aKeys as $sKey=>$sDefaultValue)
+		{
+			if (!array_key_exists($aArray, $sKey)) $aArray[$sKey] = $sDefaultValue;
+		}
+	}
+	
+	public static function appendChild($oParent, $sName)
+	{
+		//Get the total number of arguments and also get all the arguments in an array.
+		$iArgCount = func_num_args();
+		$aArguments = func_get_args();
+
+		//Create the new element and append it to the parent.
+		$oElement = $oParent->appendChild($oParent->ownerDocument->createElement(sName));
+
+		//Set the attribute values for the element.
+		for ($i = 2; $i+1 < $iArgCount; $i+=2) $oElement->setAttribute($aArguments[$i], $aArguments[$i+1]);
+
+		//Return the element.
+		return $oElement;
+	}
+
 	public static function setAttributes($oElement)
 	{
 		//Get the total number of arguments and also get all the arguments in an array.
@@ -39,6 +63,12 @@ class Utility
 		return $sContent;
 	}
 	
+	public static function encode($oElement, $sFormat, $sContent)
+	{
+		//base64_encode(gzcompress($sOldContent));
+		//'length', strlen($sOldContent), 'format', 
+	}
+
 	public static function diff($aOld, $aNew)
 	{ 
 		$omax = 0;

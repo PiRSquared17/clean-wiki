@@ -1,5 +1,9 @@
 <?
-
+/**
+ * 
+ *
+ * @author Charbel Choueiri, charbel.choueiri@live.ca
+ */
 class Comments
 {
 	private $oPage;
