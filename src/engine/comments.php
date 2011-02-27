@@ -1,7 +1,7 @@
+NOTE: this will not be utilized in the first release.
+
 <?
 /**
- * 
- *
  * @author Charbel Choueiri, charbel.choueiri@live.ca
  */
 class Comments
