@@ -41,4 +41,4 @@ Other pages that can be integrated within the main page are the login page and t
 
 Security can be handled using client AJAX calls to the server to manage security groups and users. 
 
-The AJAX component of Clean Wiki uses XML to send and receive requests. Everything can be manipulated using http requests and sending XML to the clean wiki engine. This provides the ability to programmatically call any function over the HTTP prototypical to get or set any of the wiki information.
+The AJAX component of Clean Wiki uses XML to send and receive requests. Everything can be manipulated using http requests and sending XML to the clean wiki engine. This provides the ability to programmatically call any function over the HTTP protocol to get or set any of the wiki information.
